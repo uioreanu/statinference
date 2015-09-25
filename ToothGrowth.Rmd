@@ -1,0 +1,64 @@
+---
+title: "Effect of Vitamin C on Tooth Growth in Guinea Pigs - R Analysis"
+author: "Calin Uioreanu"
+date: "September 25, 2015"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+# Overview
+We're going to analyze the ToothGrowth data in the R datasets package. 
+The ToothGrowth dataset presents the length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, (orange juice or ascorbic acid (a form of vitamin C and coded as VC).
+
+# Load the ToothGrowth data and perform some basic exploratory data analyses 
+```{r}
+data(ToothGrowth, package="datasets")
+dim(ToothGrowth)
+
+# browse variables in the set
+str(ToothGrowth)
+
+# dose is actually a categorical variable
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+```
+
+# Provide a basic summary of the data.
+```{r}
+# summary
+summary(ToothGrowth)
+
+# graphical summary
+boxplot(len ~ dose + supp, data=ToothGrowth, col=rainbow(3), plot    = TRUE, main="Teeth cell length by vitamin C dosage and delivery method")
+text(3,33, "Vitamin C daily dose: 0.5, 1 or 2 mg \n Delivery method: OJ (orange juice) or VC (ascorbic acid)", col="red")
+```
+
+We can see that as the daily dosage of Vitamin C goes up, the size of the odontoblasts cells grows, mostly when the delivery method uses ascorbic acid instead of orange juice.
+
+
+# Confidence intervals and/or hypothesis testing
+We plan to reject the null hypothesis on 
+We make two competing claims:
+
+1. **The null hypothesis** that "there is nothing going on", the tooth cellular growth has nothing to do with the daily dose of Vitamin C and the delivery method and the difference observed is due to chance alone.
+2. **The alternative hypothesis** that claims that tooth growth is dependent on dosage and delivery method, and the observed difference is not due to chance.
+
+```{r}
+#The confidence interval contains 0 so we can reject the null hypothesis. But the p-value is greater than 5% (6%) so it's not conclusive.
+t.test(len ~ supp, data = ToothGrowth)
+
+# p-value 0.6%
+t.test(len ~ supp, data = subset(ToothGrowth, dose=="0.5"))
+
+# p-value 0.1%
+t.test(len ~ supp, data = subset(ToothGrowth, dose=="1"))
+
+# p-value 96%
+t.test(len ~ supp, data = subset(ToothGrowth, dose=="2"))
+```
+
+
+# Conclusions and the assumptions. 
+We assumed that the selection of guinea pigs is random, that the guinea pigs are more or less similar as a population abd the reasearchers that took the measurements were unaware of the dosages and supplement types (blind experiment).
+
+The results show that we can reject the null hypothesis and that Vitamin C is effective at the lowest dose (0.5 mg/day). The vitamin C is **most effective** at the intermediate dose (1 mg/day). Also, there is a significant difference in tooth cell length between the dose levels, with higher doses resulting in longer teeth.
