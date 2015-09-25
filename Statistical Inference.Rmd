@@ -2,7 +2,7 @@
 title: "The Central Limit Theorem Applied to the Exponential Distribution in R"
 author: "Calin Uioreanu"
 date: "September 24, 2015"
-output: pdf_document
+output: html_document
 ---
 
 # Overview
@@ -58,6 +58,4 @@ hist(means, prob=TRUE, col="lightblue", main="mean distribution for rexp()", bre
 lines(density(means), lwd=3, col="blue")
 ```
 
-As shown in the bell curve graph, the calculated distribution of means of random sampled exponantial distributions overlaps with the normal distribution, due to the **Central Limit Theorem**.
-
-
+As shown in the graph, the calculated distribution of means of random sampled exponantial distributions overlaps with the normal distribution, due to the **Central Limit Theorem**. The more samples we would get (now 1000), the closer will the density distribution be to the normal distribution bell curve.
